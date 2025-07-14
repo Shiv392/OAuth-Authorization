@@ -4,7 +4,7 @@
   "description": "OAuth implementation using React.js, Node.js &amp; OAuth",
   "main": "index.js",
   "scripts": {
-   "start": "nodemon index.js"
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,8 @@
   "dependencies": {
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
