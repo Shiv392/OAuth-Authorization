@@ -7,6 +7,7 @@ const port = 8800;
 
 const {mysql_connection} = require('./db/db_connection.js');
 const {google_auth_routes} = require('./routes/google_auth_redirect.js');
+const {google_callback_route} = require('./routes/google_callback_redirect.js')
 require('dotenv').config();
 
 app.use(body_parser.json());
@@ -17,7 +18,8 @@ app.get('/',(req,res)=>{
     return res.send(`<h1>This is Home Route`);
 })
 
-app.use(google_auth_routes)
+app.use(google_auth_routes);
+app.use(google_callback_route);
 
 mysql_connection.connect((err)=>{
     if(err){
