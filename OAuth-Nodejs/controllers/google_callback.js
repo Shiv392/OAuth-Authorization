@@ -1,5 +1,5 @@
 const axios = require('axios');
-const {mysql_connection} = require('../db/db_connection.js');
+const {OAuthorization} = require('../models/oauthorization.js')
 
 const google_callback_redirect = async(req,res)=>{
     const {code } = req.query; //we will get this code from the google callback url ----->
@@ -26,7 +26,16 @@ const google_callback_redirect = async(req,res)=>{
     });
     console.log('user info data---->',user_info.data);
     const {id, email, name, picture} = user_info.data;
-    
+      try{
+    const {success,message,token} = await OAuthorization(user_info.data);
+    return res.redirect(`http://localhost:8800?token=${token}`);
+    }
+    catch(err){
+      return res.status(502).json({
+        success : false,
+        message : err
+      })
+    }
     }
     catch(err){
     console.error('OAuth error:', err)
