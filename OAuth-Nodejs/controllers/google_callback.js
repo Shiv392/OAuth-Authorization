@@ -1,9 +1,9 @@
 const axios = require('axios');
-const mysql = require('../db/db_connection.js');
+const {mysql_connection} = require('../db/db_connection.js');
 
 const google_callback_redirect = async(req,res)=>{
     const {code } = req.query; //we will get this code from the google callback url ----->
-
+    console.log('code---->',code);
     try{
       //now call to the google api to get access token using this code ---->
       const token_response = await axios.post('https://oauth2.googleapis.com/token', {
@@ -24,10 +24,12 @@ const google_callback_redirect = async(req,res)=>{
             Authorization: `Bearer ${access_token}`
         }
     });
-    console.log('user info---->',user_info);
+    console.log('user info data---->',user_info.data);
+    const {id, email, name, picture} = user_info.data;
+    
     }
     catch(err){
-    console.error('OAuth error:', err.message);
+    console.error('OAuth error:', err)
     res.status(500).send('Auth failed');
     }
 
