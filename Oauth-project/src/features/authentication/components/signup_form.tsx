@@ -1,5 +1,3 @@
-import React from 'react';
-
 const SignUpForm = ()=> {
     return(
         <h1>SignUp Form</h1>
