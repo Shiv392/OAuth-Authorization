@@ -8,8 +8,8 @@ dotenv.config();
 const port = 8800;
 
 const {mysql_connection} = require('./db/db_connection.js');
-const {google_auth_routes} = require('./routes/google_auth_redirect.js');
-const {google_callback_route} = require('./routes/google_callback_redirect.js')
+const {google_auth_routes} = require('./routes/oauthorization/google_auth_redirect.js');
+const {google_callback_route} = require('./routes/oauthorization/google_callback_redirect.js')
 
 
 app.use(body_parser.json());

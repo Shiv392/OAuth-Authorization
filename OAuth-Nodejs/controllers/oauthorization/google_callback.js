@@ -1,5 +1,5 @@
 const axios = require('axios');
-const {OAuthorization} = require('../models/oauthorization.js')
+const {OAuthorization} = require('../../models/oauthorization');
 
 const google_callback_redirect = async(req,res)=>{
     const {code } = req.query; //we will get this code from the google callback url ----->
