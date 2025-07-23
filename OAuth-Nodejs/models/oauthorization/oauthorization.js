@@ -1,4 +1,4 @@
-const { mysql_connection } = require('../db/db_connection.js');
+const { mysql_connection } = require('../../db/db_connection.js');
 const jwt = require('jsonwebtoken');
 
 const OAuthorization = ({ id, name, email, picture }) => {
