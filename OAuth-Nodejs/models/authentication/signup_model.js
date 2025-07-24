@@ -25,7 +25,7 @@ const SignupModel = ({name, email, password})=>{
         }
 
         const add_user_query = `insert into user(name, email, password) values (?,?,?)`;
-        mysql_connection.query(add_user_query,(addusererr)=>{
+        mysql_connection.query(add_user_query,[name,email,hashpassword],(addusererr)=>{
             if(addusererr){
                 return reject({
                 success : false,

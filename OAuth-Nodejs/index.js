@@ -9,7 +9,8 @@ const port = 8800;
 
 const {mysql_connection} = require('./db/db_connection.js');
 const {google_auth_routes} = require('./routes/oauthorization/google_auth_redirect.js');
-const {google_callback_route} = require('./routes/oauthorization/google_callback_redirect.js')
+const {google_callback_route} = require('./routes/oauthorization/google_callback_redirect.js');
+const {signup_routes} = require('./routes/authentication/signup-routes.js');
 
 
 app.use(body_parser.json());
@@ -22,6 +23,7 @@ app.get('/',(req,res)=>{
 
 app.use(google_auth_routes);
 app.use(google_callback_route);
+app.use(signup_routes);
 
 mysql_connection.connect((err)=>{
     if(err){
