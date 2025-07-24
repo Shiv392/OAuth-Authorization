@@ -23,7 +23,7 @@ const OAuthorization = ({ id, name, email, picture }) => {
                     }
 
                     const newuser_id = new_user.insertId;
-                    const jwt_token = jwt.sign({ user_id: newuser_id, email: email }, process.env.JWT_SECRET, { expiresIn: '1hr' });
+                    const jwt_token = jwt.sign({ user_id: newuser_id, email: email }, process.env.JWT_SECRET, { expiresIn: '1h' });
                     return resolve({ success: true, message: 'Login Successfull', token: jwt_token });
                 })
             }
