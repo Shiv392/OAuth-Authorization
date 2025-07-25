@@ -1,8 +1,9 @@
 const axios = require('axios');
+const {urls} = require('../constants/google_url');
 
 const get_google_tokens = async (code) => {
     try {
-        const response = await axios.post('https://oauth2.googleapis.com/token', {
+        const response = await axios.post(urls.google_auth_token, {
             code,
             client_id: process.env.GOOGLE_CLIENT_ID,
             client_secret: process.env.GOOGLE_CLIENT_SECRET,
@@ -20,7 +21,7 @@ const get_google_tokens = async (code) => {
 
 const google_user_info = async (access_token) => {
     try {
-        const user_info = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
+        const user_info = await axios.get(urls.google_user_info, {
             headers: {
                 Authorization: `Bearer ${access_token}`
             }
