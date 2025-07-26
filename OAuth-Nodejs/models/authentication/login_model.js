@@ -1,6 +1,7 @@
 const { mysql_connection } = require('../../db/db_connection.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const {create_jwt_token} = require('../../services/jwt-service.js')
 
 const LoginModel = ({ email, password }) => {
     return new Promise((resolve, reject) => {
@@ -36,8 +37,8 @@ const LoginModel = ({ email, password }) => {
                     })
                 }
 
-                const refresh_token =jwt.sign({name : name, email : email, id : id},process.env.JWT_SECRET,{expiresIn : '720h'});
-                const access_token = jwt.sign({email : email, id : id }, process.env.JWT_SECRET, {expiresIn : '24h'});
+                const refresh_token = create_jwt_token({name : name, email : email, id : id}, '720h');
+                const access_token = create_jwt_token({email : email, id : id }, '24h');
 
                 return resolve({
                     success: true,
