@@ -12,7 +12,8 @@ const {google_auth_routes} = require('./routes/oauthorization/google_auth_redire
 const {google_callback_route} = require('./routes/oauthorization/google_callback_redirect.js');
 const {signup_routes} = require('./routes/authentication/signup-routes.js');
 const { login_routes } = require('./routes/authentication/login-routes.js');
-
+const {userdetail_route} = require('./routes/features/getuser_detail.js');
+const verify_authentication = require('./middlwares/verify_token.js');
 
 app.use(body_parser.json());
 app.use(cors());
@@ -26,6 +27,9 @@ app.use(google_auth_routes);
 app.use(google_callback_route);
 app.use(signup_routes);
 app.use(login_routes);
+
+app.use(verify_authentication);
+app.use(userdetail_route);
 
 mysql_connection.connect((err)=>{
     if(err){
