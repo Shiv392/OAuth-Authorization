@@ -1,3 +1,5 @@
 export default controllers={
-    login : '/login'
+    login : '/login',
+    signup : '/signup',
+    userprofile : '/userprofile'
 }
