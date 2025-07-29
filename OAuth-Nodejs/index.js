@@ -17,7 +17,10 @@ const verify_authentication = require('./middlwares/verify_token.js');
 const user_middlware = require('./middlwares/user_middlware.js');
 
 app.use(body_parser.json());
-app.use(cors());
+app.use(cors({
+    origin : 'http://localhost:5173',
+    credentials : true
+}));
 app.use(cookie_parser());
 
 app.get('/',(req,res)=>{
