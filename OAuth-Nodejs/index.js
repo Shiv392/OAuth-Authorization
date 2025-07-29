@@ -15,6 +15,7 @@ const { login_routes } = require('./routes/authentication/login-routes.js');
 const {userdetail_route} = require('./routes/features/getuser_detail.js');
 const verify_authentication = require('./middlwares/verify_token.js');
 const user_middlware = require('./middlwares/user_middlware.js');
+const oauth_url_routes = require('./routes/oauthorization/get_oauth_url.js');
 
 app.use(body_parser.json());
 app.use(cors({
@@ -27,6 +28,7 @@ app.get('/',(req,res)=>{
     return res.send(`<h1>This is Home Route`);
 })
 
+app.use(oauth_url_routes);
 app.use(google_auth_routes);
 app.use(google_callback_route);
 app.use(signup_routes);
