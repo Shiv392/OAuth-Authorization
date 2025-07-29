@@ -1,16 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useLogin from "../hooks/useLogin";
+import useOauthgeturl from "../hooks/useOauth";
 
 const LoginForm = ()=> {
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
+   const [oauthurl, setoauthurl] = useState('');
 
    const {login, loading, error} = useLogin();
+   const {get_oauth_url} = useOauthgeturl();
 
+   useEffect(()=>{
+    oauth_url();
+   },[]);
+ 
+   const oauth_url = async()=>{
+    const res : {success : boolean, link : string} = await get_oauth_url();
+    console.log('res----->',res);
+    if(res.success){
+      setoauthurl(res.link);
+    }
+   }
    const login_submit = async()=>{
     const response = await login({email : email, password : password});
     console.log('login res-------->',response);
     console.log('logi error----->',error);
+   }
+
+   const oauth_submit = ()=>{
+    window.location.href = oauthurl
    }
 
     return(
@@ -80,6 +98,7 @@ const LoginForm = ()=> {
       </form>
       <div className="mt-3 space-y-3">
         <button
+        onClick={()=> oauth_submit()}
           className="relative inline-flex w-full items-center justify-center rounded-md border border-gray-400 bg-white px-3.5 py-2.5 font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black focus:outline-none"
           type="button"
         >
