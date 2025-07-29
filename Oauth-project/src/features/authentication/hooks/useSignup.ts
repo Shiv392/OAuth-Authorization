@@ -1,5 +1,6 @@
 import { useState } from "react";
 import signup_service from "../services/signup-service";
+import type { AxiosError } from "axios";
 
 
 const useSignup = ()=> {
@@ -13,8 +14,9 @@ const data = await signup_service(apibody);
 return data;
 }
 catch(err){
-console.log('signup hook error ----->',err);
-setError(err);
+const axios_error = err as AxiosError<any>;
+const message = axios_error.response?.data?.message;
+setError(message);
 return null;
 }
 }

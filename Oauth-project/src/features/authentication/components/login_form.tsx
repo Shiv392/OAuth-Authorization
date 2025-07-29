@@ -1,4 +1,18 @@
+import { useState } from "react";
+import useLogin from "../hooks/useLogin";
+
 const LoginForm = ()=> {
+   const [email, setEmail] = useState('');
+   const [password, setPassword] = useState('');
+
+   const {login, loading, error} = useLogin();
+
+   const login_submit = async()=>{
+    const response = await login({email : email, password : password});
+    console.log('login res-------->',response);
+    console.log('logi error----->',error);
+   }
+
     return(
 <section>
   <div
@@ -12,7 +26,7 @@ const LoginForm = ()=> {
       <p className="mt-2 text-center text-sm text-gray-600">
         Don't have an account? Create a free account
       </p>
-      <form className="mt-8" method="POST" action="#">
+      <form className="mt-8">
         <div className="space-y-5">
           <div>
             <label className="text-base font-medium text-gray-900">
@@ -20,9 +34,13 @@ const LoginForm = ()=> {
             </label>
             <div className="mt-2">
               <input
+                id="email"
+                name = "email"
                 placeholder="Email"
                 type="email"
-                className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                value = {email}
+                onChange={(e)=> setEmail(e.target.value)}
+                className="flex h-10 w-full rounded-md border  px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1"
               />
             </div>
           </div>
@@ -43,12 +61,15 @@ const LoginForm = ()=> {
               <input
                 placeholder="Password"
                 type="password"
+                value = {password}
+                onChange={(e)=> setPassword(e.target.value)}
                 className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
               />
             </div>
           </div>
           <div>
             <button
+            onClick={()=> login_submit()}
               className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
               type="button"
             >
