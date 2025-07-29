@@ -1,5 +1,6 @@
 import { useState } from "react"
 import login_service from "../services/login-service";
+import type { AxiosError } from "axios";
 
 
 const useLogin = ()=>{
@@ -16,8 +17,9 @@ const useLogin = ()=>{
          return data;
         }
         catch(err){
-            console.log('login error------>',err);
-            setError(err);
+            const axios_error = err as AxiosError<any>;
+            const message : string = axios_error.response?.data?.message || '';
+            setError(message);
             return null;
         }
     }
