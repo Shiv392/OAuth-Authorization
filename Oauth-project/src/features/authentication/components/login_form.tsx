@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import useLogin from "../hooks/useLogin";
 import useOauthgeturl from "../hooks/useOauth";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = ()=> {
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
    const [oauthurl, setoauthurl] = useState('');
+
+   const navigate = useNavigate();
 
    const {login, loading, error} = useLogin();
    const {get_oauth_url} = useOauthgeturl();
@@ -25,6 +28,9 @@ const LoginForm = ()=> {
     const response = await login({email : email, password : password});
     console.log('login res-------->',response);
     console.log('logi error----->',error);
+    if(response.success){
+     navigate('/app');
+    }
    }
 
    const oauth_submit = ()=>{
