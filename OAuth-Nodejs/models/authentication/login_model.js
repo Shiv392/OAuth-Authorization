@@ -1,64 +1,68 @@
-const { mysql_connection } = require('../../db/db_connection.js');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { create_jwt_token } = require('../../services/jwt-service.js')
+const { create_jwt_token } = require('../../services/jwt-service');
+const {mysql_connection} = require('../../db/db_connection') // assuming this is your MySQL connection
 
 const LoginModel = ({ email, password }) => {
-    return new Promise((resolve, reject) => {
-        const search_query = `select * from user where email = ?`;
-        mysql_connection.query(search_query, [email], (err, user) => {
-            if (err) {
-                return reject({
-                    success: false,
-                    message: err
-                })
-            }
+  return new Promise((resolve, reject) => {
+    const search_query = `SELECT * FROM user WHERE email = ?`;
 
-            if (user.length == 0) {
-                return resolve({
-                    success: false,
-                    message: 'User not found',
-                    not_found: true
-                })
-            }
+    mysql_connection.query(search_query, [email], (err, user) => {
+      if (err) {
+        return reject({
+          success: false,
+          message: err.message || 'Database error',
+        });
+      }
 
-            console.log('user---->', user[0]);
-            const hashpassword = user[0].password || '';
-            const { name, email, id } = user[0];
-            delete user[0].password;
+      if (!user || user.length === 0) {
+        return resolve({
+          success: false,
+          message: 'User not found',
+          not_found: true,
+        });
+      }
 
-            bcrypt.compare(password, hashpassword).then(match => {
-                console.log('match--->', match)
-                if (!match) {
-                    return resolve({
-                        success: false,
-                        message: 'Password is wrong',
-                        user: []
-                    })
-                }
+      const foundUser = user[0];
+      const hashpassword = foundUser.password || '';
 
-                const refresh_token = create_jwt_token({ name: name, email: email, id: id }, '720h');
-                const access_token = create_jwt_token({ email: email, id: id }, '24h');
+      bcrypt.compare(password, hashpassword)
+        .then((match) => {
+          if (!match) {
+            return resolve({
+              success: false,
+              message: 'Password is incorrect',
+              user: [],
+            });
+          }
 
-                return resolve({
-                    success: true,
-                    message: 'Login Successfull',
-                    user: user[0],
-                    access_token: access_token,
-                    refresh_token: refresh_token
-                })
-            }).catch((hasherr) => {
-                if (hasherr) {
-                    return reject({
-                        success: false,
-                        message: hasherr.message,
-                        badrequest: true
-                    })
-                }
-            })
+          delete foundUser.password;
 
+          const refresh_token = create_jwt_token(
+            { name: foundUser.name, email: foundUser.email, id: foundUser.id },
+            '720h'
+          );
+          const access_token = create_jwt_token(
+            { email: foundUser.email, id: foundUser.id },
+            '24h'
+          );
+
+          return resolve({
+            success: true,
+            message: 'Login successful',
+            user: foundUser,
+            access_token,
+            refresh_token,
+          });
         })
-    })
-}
+        .catch((compareErr) => {
+          return reject({
+            success: false,
+            message: compareErr.message || 'Password check failed',
+            badrequest: true,
+          });
+        });
+    });
+  });
+};
 
 module.exports = { LoginModel };

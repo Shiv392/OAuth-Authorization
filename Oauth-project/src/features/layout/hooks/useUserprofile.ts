@@ -2,7 +2,7 @@ import { useState } from "react";
 import user_detail_service from "../services/user-detail-service";
 import type { AxiosError } from "axios";
 
-const useUserProfile = async () => {
+const useUserProfile = () => {
     const [err, setError] = useState<any>(null);
 
     const get_user_profile = async () => {
