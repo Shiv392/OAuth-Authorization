@@ -8,7 +8,8 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 
-const Navbar= ()=>{
+const Navbar= ({user_info} : any)=>{
+  console.log('user daa---->', user_info)
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -20,6 +21,10 @@ const Navbar= ()=>{
     setAnchorEl(null);
   };
 
+  const handle_logout = ()=>{
+//    Cookies.remove('auth_token');
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -27,7 +32,6 @@ const Navbar= ()=>{
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Photos
           </Typography>
-          {auth && (
             <div>
               <IconButton
                 size="large"
@@ -54,11 +58,12 @@ const Navbar= ()=>{
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>Name : {user_info?.name}</MenuItem>
+                <MenuItem onClick={handleClose}>Email : {user_info?.email}</MenuItem>
+                <MenuItem onClick={handle_logout}>Logout</MenuItem>
+
               </Menu>
             </div>
-          )}
         </Toolbar>
       </AppBar>
     </Box>
