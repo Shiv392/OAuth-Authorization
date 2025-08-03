@@ -6,8 +6,8 @@ const User_info = lazy(()=> import('./user-info'));
 
 const LayoutComponent = ()=>{
 const [user_data, set_user_data] = useState<any>({});
-const {get_user_profile, error} = useUserProfile();
-const [login_user, set_login_user] = useState(false);
+const {get_user_profile, err} = useUserProfile();
+const [logged_in, set_login] = useState(false);
 
 useEffect(()=>{
 call_user_detail();
@@ -16,7 +16,9 @@ call_user_detail();
 const call_user_detail=async()=>{
 const data = await get_user_profile();
 console.log('data----->',data);
-set_user_data(data);
+if(data.success){
+    set_login(true);
+}
 }
 
 return(

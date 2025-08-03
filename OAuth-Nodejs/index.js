@@ -19,7 +19,7 @@ const oauth_url_routes = require('./routes/oauthorization/get_oauth_url.js');
 
 app.use(body_parser.json());
 app.use(cors({
-    origin : 'http://localhost:5173',
+    origin : 'http://localhost:5175',
     credentials : true
 }));
 app.use(cookie_parser());
